@@ -7,15 +7,21 @@
 </head>
 <body>
     <h3>Write new chat</h3>
-    <form method="POST" &action="/chats">
-        <input placeholder="who are you?" name="from">
-        <br/> <br/>
-        <textarea name="msg">Write your message here..</textarea>
-        <br/> <br/>
-        <input placeholder="whom to send?" name="to">
-        <br/> <br/>
-        <button>Create Chat</button>
 
+    <form method="POST" action="/chat">
+        <input placeholder="who are you?" name="from" required>
+
+        <br/><br/>
+
+        <textarea name="msg" maxlength="50">Write your message here..</textarea>
+
+        <br/><br/>
+
+        <input placeholder="whom to send?" name="to" required>
+
+        <br/><br/>
+
+        <button>Create Chat</button>
     </form>
     
 </body>
