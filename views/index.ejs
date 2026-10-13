@@ -1,69 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  <!-- Basic HTML settings -->
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Mini Whatsapp</title>
-
-
-   <script src="/app.js"></script>
-
-
-  <!-- Link CSS -->
-  <link rel="stylesheet" href="/style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MANGO3 — Messages</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
-
-
 <body>
+<div class="app-shell">
 
-<h1><b>Mini Whatsapp</b></h1>
+    <aside class="sidebar">
+        <a href="/chats" class="brand">
+            <span class="brand-mark">m.</span>
+            <span class="brand-copy">
+                <strong>mango</strong>
+                <small>MESSAGES</small>
+            </span>
+        </a>
 
-<form method="get" action="/chat/new">
-    <button class="btn">New Chat</button>
-</form>
+        <p class="nav-label">WORKSPACE</p>
 
-<br/>
+        <nav class="side-nav">
+            <a href="/chats" class="nav-link active">
+                <span class="nav-icon">▦</span>
+                All messages
+                <span class="nav-count"><%= chats.length %></span>
+            </a>
+            <a href="/chat/new" class="nav-link">
+                <span class="nav-icon">＋</span>
+                New message
+            </a>
+        </nav>
 
-<div class="chats-container">
+        <div class="sidebar-bottom">
+            <span class="sidebar-avatar">M</span>
+            <div>
+                <strong>MANGO3</strong>
+                <small>Personal workspace</small>
+            </div>
+        </div>
+    </aside>
 
-<% for(let chat of chats){ %>
+    <main class="main-content">
+        <header class="topbar">
+            <p>Workspace <span>/</span> Messages</p>
+            <span class="topbar-label">CHAT WORKSPACE</span>
+        </header>
 
-   <div class="chat">
+        <section class="page-heading">
+            <div>
+                <p class="eyebrow">YOUR WORKSPACE</p>
+                <h1>Conversations</h1>
+                <p class="page-description">
+                    Keep track of your messages in one place.
+                </p>
+            </div>
 
-      <p>From: <%= chat.from %></p>
+            <a href="/chat/new" class="button button-primary">
+                <span>＋</span> New message
+            </a>
+        </section>
 
-      <div class="msg">
-         <p><%= chat.msg %></p>
+        <section class="toolbar">
+            <div class="conversation-total">
+                <span class="total-number"><%= chats.length %></span>
+                <span>
+                    <strong>Saved messages</strong>
+                    <small>Your conversation history</small>
+                </span>
+            </div>
 
-         <form method="get" action="/chat/<%= chat._id %>/edit">
-             <button>Edit</button>
-             
-         </form>
-         <br/>
+            <label class="search-box">
+                <span aria-hidden="true">⌕</span>
+                <input
+                    type="search"
+                    id="messageSearch"
+                    placeholder="Search messages..."
+                    aria-label="Search messages"
+                >
+            </label>
+        </section>
 
-         <!-- <form method="POST" action="/chat/<%= chat._id %>?_method=DELETE">
-             <button>Delete</button>
-         </form> -->
+        <section class="conversation-grid" id="conversationGrid">
+            <% if (chats.length === 0) { %>
+                <div class="empty-state">
+                    <div class="empty-icon">✉</div>
+                    <h2>No conversations yet</h2>
+                    <p>Your messages will show up here when you create them.</p>
+                    <a href="/chat/new" class="button button-primary">
+                        Create your first message
+                    </a>
+                </div>
+            <% } %>
 
-         <form method="POST" action="/chat/<%= chat._id %>?_method=DELETE">
-            <button onclick="confirmDelete(event)">Delete</button>
-         </form>
+            <% for (const chat of chats) { %>
+                <article
+                    class="conversation-card"
+                    data-search="<%= [chat.from, chat.to, chat.msg].join(' ').toLowerCase() %>"
+                >
+                    <div class="conversation-head">
+                        <div class="person-avatar">
+                            <%= String(chat.from || "M").charAt(0).toUpperCase() %>
+                        </div>
 
-      </div>
+                        <div class="people">
+                            <strong class="sender-name"><%= chat.from %></strong>
+                            <span class="recipient-name">To <%= chat.to %></span>
+                        </div>
 
-      <p>Received by: <%= chat.to %></p>
+                        <span class="message-tag">MESSAGE</span>
+                    </div>
 
-      <hr/>
+                    <div class="message-preview">
+                        <p><%= chat.msg %></p>
+                    </div>
 
-   </div>
+                    <div class="card-footer">
+                        <span class="message-date">
+                            <%= chat.created_at
+                                ? new Date(chat.created_at).toLocaleDateString(
+                                    "en-US",
+                                    { month: "short", day: "numeric" }
+                                )
+                                : "Saved message"
+                            %>
+                        </span>
 
-<% } %>
+                        <div class="card-actions">
+                            <a
+                                href="/chat/<%= chat._id %>/edit"
+                                class="button button-small button-secondary"
+                            >Edit</a>
 
+                            <form
+                                method="POST"
+                                action="/chat/<%= chat._id %>?_method=DELETE"
+                                onsubmit="return confirm('Delete this message?')"
+                            >
+                                <button
+                                    type="submit"
+                                    class="button button-small button-danger"
+                                >Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+            <% } %>
+        </section>
+
+        <p class="no-results" id="noSearchResults" hidden>
+            No messages match your search.
+        </p>
+
+        <footer class="page-footer">
+            <span>MANGO3</span>
+            <span>Made with &hearts; and JavaScript</span>
+        </footer>
+    </main>
 </div>
 
+<script>
+    const searchInput = document.getElementById("messageSearch");
+    const cards = document.querySelectorAll(".conversation-card");
+    const noResults = document.getElementById("noSearchResults");
+
+    searchInput.addEventListener("input", () => {
+        const query = searchInput.value.trim().toLowerCase();
+        let visibleCards = 0;
+
+        cards.forEach(card => {
+            const matches = card.dataset.search.includes(query);
+            card.hidden = !matches;
+
+            if (matches) visibleCards++;
+        });
+
+        noResults.hidden = !query || visibleCards > 0;
+    });
+</script>
 </body>
 </html>

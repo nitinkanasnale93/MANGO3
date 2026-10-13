@@ -3,33 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit your Chat</title>
-
-    <!-- CSS linked -->
+    <title>Edit Message — MANGO3</title>
     <link rel="stylesheet" href="/style.css">
 </head>
-
 <body>
+<div class="app-shell">
 
-<h3>Edit your Chat <%= chat._id %></h3>
+    <aside class="sidebar">
+        <a href="/chats" class="brand">
+            <span class="brand-mark">m.</span>
+            <span class="brand-copy">
+                <strong>mango</strong>
+                <small>MESSAGES</small>
+            </span>
+        </a>
 
-<p>
-  This chat was sent from <b><%= chat.from %></b>
-  to <b><%= chat.to %></b>
-</p>
+        <p class="nav-label">WORKSPACE</p>
 
+        <nav class="side-nav">
+            <a href="/chats" class="nav-link active">
+                <span class="nav-icon">▦</span> All messages
+            </a>
+            <a href="/chat/new" class="nav-link">
+                <span class="nav-icon">＋</span> New message
+            </a>
+        </nav>
 
-<div class="chat">
-   <p class="msg"><%= chat.msg %></p>
+        <div class="sidebar-bottom">
+            <span class="sidebar-avatar">M</span>
+            <div>
+                <strong>MANGO3</strong>
+                <small>Personal workspace</small>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <p>Workspace <span>/</span> Edit message</p>
+            <span class="topbar-label">CHAT WORKSPACE</span>
+        </header>
+
+        <div class="form-page">
+            <a href="/chats" class="back-link">← Back to messages</a>
+
+            <section class="form-heading">
+                <p class="eyebrow">MESSAGES</p>
+                <h1>Edit message</h1>
+                <p>Update your message below. Sender and recipient stay unchanged.</p>
+            </section>
+
+            <section class="form-card">
+                <div class="form-card-heading">
+                    <h2>Message details</h2>
+                    <p>Review the conversation and update its text.</p>
+                </div>
+
+                <div class="form-info">
+                    <div><strong>From:</strong> <%= chat.from %></div>
+                    <div><strong>To:</strong> <%= chat.to %></div>
+                </div>
+
+                <form
+                    method="POST"
+                    action="/chat/<%= chat._id %>?_method=PUT"
+                    class="message-form"
+                >
+                    <div class="form-field">
+                        <label for="msg">Message</label>
+                        <textarea
+                            id="msg"
+                            name="msg"
+                            maxlength="50"
+                            required
+                        ><%= chat.msg %></textarea>
+                        <span class="field-hint">Maximum 50 characters.</span>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="/chats" class="button button-secondary">Cancel</a>
+                        <button type="submit" class="button button-primary">
+                            Save changes →
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <footer class="page-footer">
+            <span>MANGO3</span>
+            <span>Made with &hearts; and JavaScript</span>
+        </footer>
+    </main>
 </div>
-
-<form method="POST" action="/chat/<%= chat._id %>?_method=PUT">
-    <textarea name="msg"><%= chat.msg %></textarea>
-    <br>
-    <button>Edit</button>
-</form>
-
-
-
 </body>
 </html>

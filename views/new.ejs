@@ -3,26 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Write new chat</title>
+    <title>New Message — MANGO3</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <h3>Write new chat</h3>
+<div class="app-shell">
 
-    <form method="POST" action="/chat">
-        <input placeholder="who are you?" name="from" required>
+    <aside class="sidebar">
+        <a href="/chats" class="brand">
+            <span class="brand-mark">m.</span>
+            <span class="brand-copy">
+                <strong>mango</strong>
+                <small>MESSAGES</small>
+            </span>
+        </a>
 
-        <br/><br/>
+        <p class="nav-label">WORKSPACE</p>
 
-        <textarea name="msg" maxlength="50">Write your message here..</textarea>
+        <nav class="side-nav">
+            <a href="/chats" class="nav-link">
+                <span class="nav-icon">▦</span> All messages
+            </a>
+            <a href="/chat/new" class="nav-link active">
+                <span class="nav-icon">＋</span> New message
+            </a>
+        </nav>
 
-        <br/><br/>
+        <div class="sidebar-bottom">
+            <span class="sidebar-avatar">M</span>
+            <div>
+                <strong>MANGO3</strong>
+                <small>Personal workspace</small>
+            </div>
+        </div>
+    </aside>
 
-        <input placeholder="whom to send?" name="to" required>
+    <main class="main-content">
+        <header class="topbar">
+            <p>Workspace <span>/</span> New message</p>
+            <span class="topbar-label">CHAT WORKSPACE</span>
+        </header>
 
-        <br/><br/>
+        <div class="form-page">
+            <a href="/chats" class="back-link">← Back to messages</a>
 
-        <button>Create Chat</button>
-    </form>
-    
+            <section class="form-heading">
+                <p class="eyebrow">MESSAGES</p>
+                <h1>Create a message</h1>
+                <p>Write a message and choose who it's from and who receives it.</p>
+            </section>
+
+            <section class="form-card">
+                <div class="form-card-heading">
+                    <h2>Message details</h2>
+                    <p>Complete the details below to save your message.</p>
+                </div>
+
+                <form method="POST" action="/chat" class="message-form">
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label for="from">From</label>
+                            <input
+                                id="from"
+                                name="from"
+                                type="text"
+                                placeholder="Your name"
+                                autocomplete="name"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-field">
+                            <label for="to">To</label>
+                            <input
+                                id="to"
+                                name="to"
+                                type="text"
+                                placeholder="Recipient's name"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="msg">Message</label>
+                        <textarea
+                            id="msg"
+                            name="msg"
+                            placeholder="Write something..."
+                            maxlength="50"
+                            required
+                        ></textarea>
+                        <span class="field-hint">Maximum 50 characters.</span>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="/chats" class="button button-secondary">Cancel</a>
+                        <button type="submit" class="button button-primary">
+                            Save message →
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <footer class="page-footer">
+            <span>MANGO3</span>
+            <span>Made with &hearts; and JavaScript</span>
+        </footer>
+    </main>
+</div>
 </body>
 </html>
