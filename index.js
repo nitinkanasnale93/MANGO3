@@ -1,5 +1,12 @@
 require("dotenv").config();
 
+const dns = require("node:dns");
+
+// Work around the local Windows DNS issue
+if (!process.env.VERCEL) {
+    dns.setServers(["1.1.1.1", "8.8.8.8"]);
+}
+
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
